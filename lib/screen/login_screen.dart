@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart'; // Asegúrate de importar go_router
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:residents_app/widgets/form_container_widget.dart';
+import 'package:residents_app/widgets/toast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,7 +14,36 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isSigning = false;
+  TextEditingController _emailController =
+      TextEditingController(text: "ejemplo@correo.com");
+  TextEditingController _passwordController =
+      TextEditingController(text: "Contraseña123");
+
+  void signIn() async {
+    // Verificar si los campos están vacíos
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      showToast(message: "Por favor completa todos los campos.");
+      return;
+    }
+
+    setState(() {
+      _isSigning = true; // Mostrar el loader
+    });
+
+    try {
+      await _auth.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+      context.go('/proposals');
+    } on FirebaseAuthException catch (e) {
+      showToast(message: e.message ?? "Error al iniciar sesión.");
+    } finally {
+      setState(() {
+        _isSigning = false; // Ocultar el loader
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 30,
               ),
               FormContainerWidget(
+                controller: _emailController,
                 hintText: "Email",
                 isPasswordField: false,
               ),
@@ -38,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 10,
               ),
               FormContainerWidget(
+                controller: _passwordController,
                 hintText: "Password",
                 isPasswordField: true,
               ),
@@ -45,10 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 30,
               ),
               GestureDetector(
-                onTap: () {
-                  context.go(
-                      '/proposals'); // Utiliza context.go para navegar
-                },
+                onTap: signIn,
                 child: Container(
                   width: double.infinity,
                   height: 45,
@@ -74,7 +104,6 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 10,
               ),
-              //
               SizedBox(
                 height: 20,
               ),
@@ -87,7 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // Aquí utilizamos context.go para la navegación
                       context.go('/signup');
                     },
                     child: Text(

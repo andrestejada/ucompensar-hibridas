@@ -6,8 +6,13 @@ import 'package:residents_app/screen/sign_up_screen.dart';
 import 'package:residents_app/views/create_proposal_view.dart';
 import 'package:residents_app/views/favorites_view.dart';
 import 'package:residents_app/views/proposals_view.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
