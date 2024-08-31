@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ProposalCard extends StatelessWidget {
-  const ProposalCard({
-    super.key,
-  });
+  final String title;
+  final String description;
+  final String name;
+  final String lastName;
+  final String block;
+  final String apartment;
+  const ProposalCard(
+      {super.key,
+      required this.title,
+      required this.description,
+      required this.name,
+      required this.lastName,
+      required this.block,
+      required this.apartment});
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +26,15 @@ class ProposalCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment
               .start, // Asegura que los hijos estén alineados a la izquierda
           children: [
-            const ListTile(
+            ListTile(
               title: Text(
-                'Cambio de empresa de seguridad',
+                title,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              subtitle: Text(
-                  'La empresa que esta actualmente no esta cumpliendo con la reglas basicas'),
+              subtitle: Text(description),
             ),
             Align(
               alignment: Alignment.centerLeft,
@@ -41,7 +51,7 @@ class ProposalCard extends StatelessWidget {
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Andres Tejada',
+                            text: '$name $lastName',
                             style: TextStyle(
                               fontSize:
                                   16, // Tamaño de fuente normal para el resto del texto
@@ -58,7 +68,7 @@ class ProposalCard extends StatelessWidget {
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: '5',
+                            text: block,
                             style: TextStyle(
                               fontSize:
                                   16, // Tamaño de fuente normal para el resto del texto
@@ -75,7 +85,7 @@ class ProposalCard extends StatelessWidget {
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: '101',
+                            text: apartment,
                             style: TextStyle(
                               fontSize:
                                   16, // Tamaño de fuente normal para el resto del texto

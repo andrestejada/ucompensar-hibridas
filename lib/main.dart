@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             GoRoute(
               path: '/proposals',
               builder: (context, state) {
-                return const ProposalsView();
+                return ProposalsView();
               },
             ),
           ])

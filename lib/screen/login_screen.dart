@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart'; // Asegúrate de importar go_router
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:residents_app/widgets/form_container_widget.dart';
 import 'package:residents_app/widgets/toast.dart';
 
