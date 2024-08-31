@@ -3,6 +3,7 @@ import 'package:residents_app/widgets/proposal_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:residents_app/widgets/toast.dart';
+import 'package:go_router/go_router.dart';
 
 class ProposalsView extends StatelessWidget {
   ProposalsView({super.key});
@@ -35,6 +36,12 @@ class ProposalsView extends StatelessWidget {
     }
   }
 
+  Future<void> _signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    // Navegar a la pantalla de inicio de sesión después de cerrar sesión
+    context.go('/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +51,12 @@ class ProposalsView extends StatelessWidget {
           'Listado De Propuestas',
           textAlign: TextAlign.center,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () => _signOut(context),
+          ),
+        ],
       ),
       body: StreamBuilder(
         stream: db.collection('proposals').snapshots(),

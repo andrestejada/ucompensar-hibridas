@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1012959371446:android:7b901ce1672231fb634617",
+        "mobilesdk_app_id": "1:1012959371446:android:977bb17de45a784c634617",
         "android_client_info": {
-          "package_name": "com.residents.app"
+          "package_name": "com.example.residents_app"
         }
       },
       "oauth_client": [],

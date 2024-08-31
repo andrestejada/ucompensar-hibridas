@@ -17,15 +17,24 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,39 +52,12 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDpFXzRWss-h108IpAmf34i8uo8FL_Mf3U',
-    appId: '1:1012959371446:web:a978a21e281cd4b3634617',
-    messagingSenderId: '1012959371446',
-    projectId: 'ucompensar-app',
-    authDomain: 'ucompensar-app.firebaseapp.com',
-    storageBucket: 'ucompensar-app.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCqF1ZSTpg9qOtO7oipNxRJRLLE3mqG0pQ',
-    appId: '1:1012959371446:android:7b901ce1672231fb634617',
+    appId: '1:1012959371446:android:977bb17de45a784c634617',
     messagingSenderId: '1012959371446',
     projectId: 'ucompensar-app',
     storageBucket: 'ucompensar-app.appspot.com',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCg0P82g-5BX-DomOsISvAJcWA5bbdzbpY',
-    appId: '1:1012959371446:ios:5e008f839d59f38b634617',
-    messagingSenderId: '1012959371446',
-    projectId: 'ucompensar-app',
-    storageBucket: 'ucompensar-app.appspot.com',
-    iosBundleId: 'com.example.residentsApp',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCg0P82g-5BX-DomOsISvAJcWA5bbdzbpY',
-    appId: '1:1012959371446:ios:5e008f839d59f38b634617',
-    messagingSenderId: '1012959371446',
-    projectId: 'ucompensar-app',
-    storageBucket: 'ucompensar-app.appspot.com',
-    iosBundleId: 'com.example.residentsApp',
   );
 
 }

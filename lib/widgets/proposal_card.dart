@@ -53,6 +53,7 @@ class ProposalCard extends StatelessWidget {
                         text: 'Nombre: ',
                         style: TextStyle(
                           fontSize: 16,
+                          color: Colors.black
                         ),
                         children: <TextSpan>[
                           TextSpan(
@@ -69,6 +70,7 @@ class ProposalCard extends StatelessWidget {
                         text: 'Torre: ',
                         style: TextStyle(
                           fontSize: 16,
+                          color: Colors.black
                         ),
                         children: <TextSpan>[
                           TextSpan(
@@ -85,12 +87,14 @@ class ProposalCard extends StatelessWidget {
                         text: 'Apartamento: ',
                         style: TextStyle(
                           fontSize: 16,
+                          color: Colors.black
                         ),
                         children: <TextSpan>[
                           TextSpan(
                             text: apartment,
                             style: TextStyle(
                               fontSize: 16,
+                              color: Colors.black
                             ),
                           ),
                         ],
