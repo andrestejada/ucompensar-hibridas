@@ -15,10 +15,8 @@ class CreateProposalView extends StatefulWidget {
 class _CreateProposalViewState extends State<CreateProposalView> {
   bool _isLoading = false;
   FirebaseFirestore db = FirebaseFirestore.instance;
-  TextEditingController _titleController =
-      TextEditingController(text: "cambio de jardinero");
-  TextEditingController _descriptionController =
-      TextEditingController(text: "se duerme cortando el pasto");
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
 
   void _createProposal() async {
     setState(() {
@@ -36,7 +34,7 @@ class _CreateProposalViewState extends State<CreateProposalView> {
     }
     final usersProposal = <String, dynamic>{
       "title": _titleController.text,
-      "description": _titleController.text,
+      "description": _descriptionController.text,
       "likes": 0,
       "likedBy": [],
       "user": userInfo.data()
@@ -44,6 +42,8 @@ class _CreateProposalViewState extends State<CreateProposalView> {
 
     await db.collection("proposals").add(usersProposal);
 
+    _descriptionController.text = "";
+    _titleController.text = "";
     setState(() {
       _isLoading = false;
     });

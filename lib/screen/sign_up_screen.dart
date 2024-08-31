@@ -18,16 +18,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   TextEditingController _emailController =
-      TextEditingController(text: "ejemplo@correo.com");
+      TextEditingController();
   TextEditingController _passwordController =
-      TextEditingController(text: "Contraseña123");
-  TextEditingController _nameController = TextEditingController(text: "Juan");
+      TextEditingController();
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _lastNameController =
-      TextEditingController(text: "Pérez");
+      TextEditingController();
   TextEditingController _apartmentController =
-      TextEditingController(text: "Apt 101");
+      TextEditingController();
   TextEditingController _blockController =
-      TextEditingController(text: "Torre 1");
+      TextEditingController();
 
   @override
   void dispose() {
