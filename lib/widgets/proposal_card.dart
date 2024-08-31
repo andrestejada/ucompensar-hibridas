@@ -7,14 +7,20 @@ class ProposalCard extends StatelessWidget {
   final String lastName;
   final String block;
   final String apartment;
-  const ProposalCard(
-      {super.key,
-      required this.title,
-      required this.description,
-      required this.name,
-      required this.lastName,
-      required this.block,
-      required this.apartment});
+  final int likes;
+  final VoidCallback onLike;
+
+  const ProposalCard({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.name,
+    required this.lastName,
+    required this.block,
+    required this.apartment,
+    required this.likes,
+    required this.onLike,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +29,7 @@ class ProposalCard extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment
-              .start, // Asegura que los hijos estén alineados a la izquierda
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListTile(
               title: Text(
@@ -53,8 +58,7 @@ class ProposalCard extends StatelessWidget {
                           TextSpan(
                             text: '$name $lastName',
                             style: TextStyle(
-                              fontSize:
-                                  16, // Tamaño de fuente normal para el resto del texto
+                              fontSize: 16,
                             ),
                           ),
                         ],
@@ -70,8 +74,7 @@ class ProposalCard extends StatelessWidget {
                           TextSpan(
                             text: block,
                             style: TextStyle(
-                              fontSize:
-                                  16, // Tamaño de fuente normal para el resto del texto
+                              fontSize: 16,
                             ),
                           ),
                         ],
@@ -87,8 +90,7 @@ class ProposalCard extends StatelessWidget {
                           TextSpan(
                             text: apartment,
                             style: TextStyle(
-                              fontSize:
-                                  16, // Tamaño de fuente normal para el resto del texto
+                              fontSize: 16,
                             ),
                           ),
                         ],
@@ -102,13 +104,19 @@ class ProposalCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite,
-                    size: 30,
-                    color: Colors.redAccent,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: onLike,
+                      icon: Icon(
+                        Icons.favorite,
+                        size: 30,
+                        color: likes == 0 ? Colors.grey : Colors.redAccent,
+                      ),
+                    ),
+                    Text('$likes'),
+                  ],
                 ),
               ),
             ),

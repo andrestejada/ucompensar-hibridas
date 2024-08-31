@@ -37,6 +37,8 @@ class _CreateProposalViewState extends State<CreateProposalView> {
     final usersProposal = <String, dynamic>{
       "title": _titleController.text,
       "description": _titleController.text,
+      "likes": 0,
+      "likedBy": [],
       "user": userInfo.data()
     };
 
