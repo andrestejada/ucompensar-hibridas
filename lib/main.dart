@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:residents_app/screen/home_screen.dart';
 import 'package:residents_app/screen/login_screen.dart';
 import 'package:residents_app/screen/sign_up_screen.dart';
+import 'package:residents_app/views/announcement_view.dart';
+import 'package:residents_app/views/create_announcement_view.dart';
 import 'package:residents_app/views/create_proposal_view.dart';
 import 'package:residents_app/views/favorites_view.dart';
 import 'package:residents_app/views/proposals_view.dart';
@@ -50,6 +52,18 @@ class MyApp extends StatelessWidget {
               path: '/proposals',
               builder: (context, state) {
                 return ProposalsView();
+              },
+            ),
+            GoRoute(
+              path: '/announcement',
+              builder: (context, state) {
+                return AnnouncementView();
+              },
+            ),
+            GoRoute(
+              path: '/create-announcement',
+              builder: (context, state) {
+                return CreateAnnouncementView();
               },
             ),
           ])

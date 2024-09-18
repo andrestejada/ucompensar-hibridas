@@ -6,7 +6,6 @@ class CustomBottomNavigation extends StatelessWidget {
 
   int getCurrentIndex(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
-    print(location);
     switch (location) {
       case '/proposals':
         return 0;
@@ -16,6 +15,8 @@ class CustomBottomNavigation extends StatelessWidget {
 
       case '/favorites':
         return 2;
+      case '/announcement':
+        return 3;
 
       default:
         return 0;
@@ -33,6 +34,9 @@ class CustomBottomNavigation extends StatelessWidget {
       case 2:
         context.go('/favorites');
         break;
+      case 3:
+        context.go('/announcement');
+        break;
     }
   }
 
@@ -41,6 +45,7 @@ class CustomBottomNavigation extends StatelessWidget {
     return BottomNavigationBar(
         selectedItemColor: Colors.amber[800],
         currentIndex: getCurrentIndex(context),
+        unselectedItemColor: Colors.grey,
         onTap: (value) => onItemTapped(context, value),
         items: const [
           BottomNavigationBarItem(
@@ -49,6 +54,8 @@ class CustomBottomNavigation extends StatelessWidget {
               icon: Icon(Icons.create), label: 'Crear Propuesta'),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite_outline), label: 'Favoritos'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.announcement), label: 'Anuncios'),
         ]);
   }
 }

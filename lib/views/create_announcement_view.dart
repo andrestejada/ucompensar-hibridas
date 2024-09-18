@@ -1,56 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:residents_app/widgets/form_container_widget.dart';
-import 'package:go_router/go_router.dart';
-import 'package:residents_app/widgets/toast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CreateProposalView extends StatefulWidget {
-  const CreateProposalView({super.key});
+class CreateAnnouncementView extends StatefulWidget {
+  const CreateAnnouncementView({super.key});
 
   @override
-  State<CreateProposalView> createState() => _CreateProposalViewState();
+  State<CreateAnnouncementView> createState() => _CreateAnnouncementViewState();
 }
 
-class _CreateProposalViewState extends State<CreateProposalView> {
+class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
   bool _isLoading = false;
   FirebaseFirestore db = FirebaseFirestore.instance;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-
-  void _createProposal() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    //validate fields
-
-    User? user = FirebaseAuth.instance.currentUser;
-    final docRef = db.collection("users").doc(user?.uid);
-    final userInfo = await docRef.get();
-
-    if (!userInfo.exists) {
-      throw Exception("User document not found");
-    }
-    final usersProposal = <String, dynamic>{
-      "title": _titleController.text,
-      "description": _descriptionController.text,
-      "likes": 0,
-      "likedBy": [],
-      "user": userInfo.data()
-    };
-
-    await db.collection("proposals").add(usersProposal);
-
-    _descriptionController.text = "";
-    _titleController.text = "";
-    setState(() {
-      _isLoading = false;
-    });
-
-    showToast(message: "La Propuesta se agrego correctamente");
-  }
-
+  void _createAnnouncement() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +25,7 @@ class _CreateProposalViewState extends State<CreateProposalView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Crear Propuesta",
+                "Crear Anuncio",
                 style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -89,7 +53,7 @@ class _CreateProposalViewState extends State<CreateProposalView> {
                 height: 30,
               ),
               GestureDetector(
-                onTap: _createProposal,
+                onTap: _createAnnouncement,
                 child: Container(
                   width: double.infinity,
                   height: 45,
@@ -120,6 +84,6 @@ class _CreateProposalViewState extends State<CreateProposalView> {
         ),
       ),
     );
-
+    ;
   }
 }
