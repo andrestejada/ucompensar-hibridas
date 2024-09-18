@@ -9,6 +9,7 @@ class ProposalCard extends StatelessWidget {
   final String apartment;
   final int likes;
   final VoidCallback onLike;
+  final bool? showLike;
 
   const ProposalCard({
     super.key,
@@ -20,6 +21,7 @@ class ProposalCard extends StatelessWidget {
     required this.apartment,
     required this.likes,
     required this.onLike,
+    this.showLike = true,
   });
 
   @override
@@ -51,10 +53,7 @@ class ProposalCard extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: 'Nombre: ',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
                             text: '$name $lastName',
@@ -68,10 +67,7 @@ class ProposalCard extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: 'Torre: ',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
                             text: block,
@@ -85,17 +81,11 @@ class ProposalCard extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: 'Apartamento: ',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
                             text: apartment,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black
-                            ),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
                         ],
                       ),

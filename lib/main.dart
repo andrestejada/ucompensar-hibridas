@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             GoRoute(
               path: '/favorites',
               builder: (context, state) {
-                return const FavoritesView();
+                return FavoritesView();
               },
             ),
             GoRoute(
