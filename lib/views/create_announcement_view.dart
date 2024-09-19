@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:residents_app/widgets/form_container_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart'; // Importa el paquete image_picker
+import 'dart:io';
 
 class CreateAnnouncementView extends StatefulWidget {
   const CreateAnnouncementView({super.key});
@@ -11,10 +12,14 @@ class CreateAnnouncementView extends StatefulWidget {
 
 class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
   bool _isLoading = false;
-  FirebaseFirestore db = FirebaseFirestore.instance;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  void _createAnnouncement() {}
+
+  void _createAnnouncement() {
+    // Aquí implementas la lógica para crear el anuncio
+    // y para manejar el archivo de imagen (subir a Firebase Storage, por ejemplo)
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,30 +33,24 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
                 "Crear Anuncio",
                 style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               FormContainerWidget(
                 controller: _titleController,
-                hintText: "Titulo",
+                hintText: "Título",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Por favor, ingresa un título';
                   }
                   return null;
                 },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               FormContainerWidget(
                 controller: _descriptionController,
                 hintText: "Descripción",
                 isTextArea: true,
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 20),
               GestureDetector(
                 onTap: _createAnnouncement,
                 child: Container(
@@ -76,14 +75,11 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
             ],
           ),
         ),
       ),
     );
-    ;
   }
 }
