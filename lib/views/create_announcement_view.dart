@@ -19,13 +19,12 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
   FirebaseFirestore db = FirebaseFirestore.instance;
   FirebaseStorage storage = FirebaseStorage.instance; // Firebase Storage
 
-  File? _imageFile; // Variable para la imagen capturada
+  File? _imageFile;
   final picker = ImagePicker();
 
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
-  // Método para seleccionar una imagen desde la cámara
   Future<void> _pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
@@ -36,14 +35,12 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
     }
   }
 
-  // Método para subir la imagen a Firebase Storage y obtener la URL
   Future<String?> _uploadImage(File image) async {
     try {
-      // Generar una referencia única para la imagen en Firebase Storage
       final storageRef = storage.ref().child('announcements/${DateTime.now().millisecondsSinceEpoch}.jpg');
       final uploadTask = await storageRef.putFile(image);
 
-      // Obtener la URL de la imagen subida
+
       return await uploadTask.ref.getDownloadURL();
     } catch (e) {
       print('Error al subir la imagen: $e');
@@ -67,7 +64,6 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
       throw Exception("User document not found");
     }
 
-    // Si hay imagen seleccionada, sube la imagen primero
     String? imageUrl;
     if (_imageFile != null) {
       imageUrl = await _uploadImage(_imageFile!);
@@ -77,12 +73,10 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
       "title": _titleController.text,
       "description": _descriptionController.text,
       "user": userInfo.data(),
-      "imageUrl": imageUrl, // Añadir la URL de la imagen (si existe)
+      "imageUrl": imageUrl, 
     };
 
     await db.collection("announcement").add(usersAnnouncement);
-
-    // Limpiar los campos y restablecer el estado
     _descriptionController.text = "";
     _titleController.text = "";
     setState(() {
