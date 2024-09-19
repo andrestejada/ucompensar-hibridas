@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:residents_app/widgets/announcement_card.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore
+import 'package:cloud_firestore/cloud_firestore.dart'; 
 
 class AnnouncementView extends StatelessWidget {
   const AnnouncementView({super.key});
 
-  // Método que obtiene el stream de anuncios desde Firestore
   Stream<QuerySnapshot> getAnnouncementsStream() {
     return FirebaseFirestore.instance.collection('announcement').snapshots();
   }
@@ -67,19 +66,19 @@ class AnnouncementView extends StatelessWidget {
                       return Text("No hay anuncios disponibles");
                     }
 
-                    // Mapeamos los datos de los anuncios
                     final announcements = snapshot.data!.docs;
 
                     return Column(
                       children: announcements.map((doc) {
-                        // Suponiendo que el anuncio tiene un campo 'title' y 'description'
                         final title = doc['title'] ?? 'Sin título';
                         final description =
                             doc['description'] ?? 'Sin descripción';
+                        final imageUrl = doc['imageUrl'] as String?;
 
                         return AnnouncementCard(
                           title: title,
                           description: description,
+                          imageUrl: imageUrl, 
                         );
                       }).toList(),
                     );

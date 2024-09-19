@@ -38,7 +38,6 @@ class ProposalsView extends StatelessWidget {
 
   Future<void> _signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    // Navegar a la pantalla de inicio de sesión después de cerrar sesión
     context.go('/login');
   }
 

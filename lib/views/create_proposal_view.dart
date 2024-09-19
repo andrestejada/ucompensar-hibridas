@@ -23,7 +23,6 @@ class _CreateProposalViewState extends State<CreateProposalView> {
       _isLoading = true;
     });
 
-    //validate fields
 
     User? user = FirebaseAuth.instance.currentUser;
     final docRef = db.collection("users").doc(user?.uid);
