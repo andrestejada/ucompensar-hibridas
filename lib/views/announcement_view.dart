@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:residents_app/widgets/announcement_card.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore
 
 class AnnouncementView extends StatelessWidget {
   const AnnouncementView({super.key});
+
+  // Método que obtiene el stream de anuncios desde Firestore
+  Stream<QuerySnapshot> getAnnouncementsStream() {
+    return FirebaseFirestore.instance.collection('announcement').snapshots();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,25 +52,38 @@ class AnnouncementView extends StatelessWidget {
                     ),
                   ),
                 ),
-                AnnouncementCard(
-                    title: 'test',
-                    description: 'test description',
-                    imageUrl: 'https://elfrente.com.co/content/images/size/w1304/format/webp/2024/01/Receta-de-Lechona-Tolimense.webp'
-                ),
-                AnnouncementCard(
-                    title: 'test',
-                    description: 'test description',
-                    imageUrl: 'https://elfrente.com.co/content/images/size/w1304/format/webp/2024/01/Receta-de-Lechona-Tolimense.webp'
-                ),
-                AnnouncementCard(
-                    title: 'test',
-                    description: 'test description',
-                    imageUrl: 'https://elfrente.com.co/content/images/size/w1304/format/webp/2024/01/Receta-de-Lechona-Tolimense.webp'
-                ),
-                AnnouncementCard(
-                    title: 'test',
-                    description: 'test description',
-                    imageUrl: 'https://elfrente.com.co/content/images/size/w1304/format/webp/2024/01/Receta-de-Lechona-Tolimense.webp'
+                SizedBox(height: 20),
+                // StreamBuilder para cargar los anuncios
+                StreamBuilder<QuerySnapshot>(
+                  stream: getAnnouncementsStream(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    }
+                    if (snapshot.hasError) {
+                      return Text("Error al cargar anuncios");
+                    }
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Text("No hay anuncios disponibles");
+                    }
+
+                    // Mapeamos los datos de los anuncios
+                    final announcements = snapshot.data!.docs;
+
+                    return Column(
+                      children: announcements.map((doc) {
+                        // Suponiendo que el anuncio tiene un campo 'title' y 'description'
+                        final title = doc['title'] ?? 'Sin título';
+                        final description =
+                            doc['description'] ?? 'Sin descripción';
+
+                        return AnnouncementCard(
+                          title: title,
+                          description: description,
+                        );
+                      }).toList(),
+                    );
+                  },
                 ),
               ],
             ),
