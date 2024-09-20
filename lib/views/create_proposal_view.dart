@@ -18,36 +18,52 @@ class _CreateProposalViewState extends State<CreateProposalView> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
 
+  // Método para validar campos y crear propuesta
   void _createProposal() async {
+    // Verifica si los campos están vacíos
+    if (_titleController.text.isEmpty || _descriptionController.text.isEmpty) {
+      showToast(message: "Todos los campos son obligatorios");  // Mostrar toast si hay campos vacíos
+      return;  // Detener ejecución si hay campos vacíos
+    }
+
     setState(() {
       _isLoading = true;
     });
 
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      final docRef = db.collection("users").doc(user?.uid);
+      final userInfo = await docRef.get();
 
-    User? user = FirebaseAuth.instance.currentUser;
-    final docRef = db.collection("users").doc(user?.uid);
-    final userInfo = await docRef.get();
+      if (!userInfo.exists) {
+        throw Exception("User document not found");
+      }
 
-    if (!userInfo.exists) {
-      throw Exception("User document not found");
+      // Crear objeto con la propuesta
+      final usersProposal = <String, dynamic>{
+        "title": _titleController.text,
+        "description": _descriptionController.text,
+        "likes": 0,
+        "likedBy": [],
+        "user": userInfo.data(),
+      };
+
+      // Guardar propuesta en Firestore
+      await db.collection("proposals").add(usersProposal);
+
+      // Limpiar los campos del formulario
+      _descriptionController.text = "";
+      _titleController.text = "";
+
+      showToast(message: "La propuesta se agregó correctamente");
+      context.go('/proposals');
+    } catch (e) {
+      showToast(message: "Error al crear la propuesta: $e");
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    final usersProposal = <String, dynamic>{
-      "title": _titleController.text,
-      "description": _descriptionController.text,
-      "likes": 0,
-      "likedBy": [],
-      "user": userInfo.data()
-    };
-
-    await db.collection("proposals").add(usersProposal);
-
-    _descriptionController.text = "";
-    _titleController.text = "";
-    setState(() {
-      _isLoading = false;
-    });
-
-    showToast(message: "La Propuesta se agrego correctamente");
   }
 
   @override
@@ -63,32 +79,26 @@ class _CreateProposalViewState extends State<CreateProposalView> {
                 "Crear Propuesta",
                 style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               FormContainerWidget(
                 controller: _titleController,
-                hintText: "Titulo",
+                hintText: "Título",
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Por favor, ingresa un título';
                   }
                   return null;
                 },
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               FormContainerWidget(
                 controller: _descriptionController,
                 hintText: "Descripción",
                 isTextArea: true,
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               GestureDetector(
-                onTap: _createProposal,
+                onTap: _createProposal,  // Llamar al método de crear propuesta
                 child: Container(
                   width: double.infinity,
                   height: 45,
@@ -111,14 +121,11 @@ class _CreateProposalViewState extends State<CreateProposalView> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
             ],
           ),
         ),
       ),
     );
-
   }
 }
