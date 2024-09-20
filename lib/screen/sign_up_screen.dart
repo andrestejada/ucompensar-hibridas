@@ -17,17 +17,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  TextEditingController _emailController =
-      TextEditingController();
-  TextEditingController _passwordController =
-      TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _lastNameController =
-      TextEditingController();
-  TextEditingController _apartmentController =
-      TextEditingController();
-  TextEditingController _blockController =
-      TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _apartmentController = TextEditingController();
+  TextEditingController _blockController = TextEditingController();
 
   @override
   void dispose() {
@@ -72,13 +67,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       context.go('/proposals');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        showToast(message: 'The password provided is too weak.');
+        showToast(message: 'El password que creaste es muy debil');
       } else if (e.code == 'email-already-in-use') {
         showToast(message: "Ese correo ya existe");
       }
+      showToast(message: e.message ?? "Error");
     } catch (e) {
       showToast(message: "Error al registrar usuario.");
-      print(e);
     } finally {
       setState(() {
         isSigningUp = false;
@@ -89,116 +84,118 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Crear Cuenta",
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              FormContainerWidget(
-                controller: _nameController,
-                hintText: "Nombre",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormContainerWidget(
-                controller: _lastNameController,
-                hintText: "Apellido",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormContainerWidget(
-                controller: _apartmentController,
-                hintText: "Apartamento",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormContainerWidget(
-                controller: _blockController,
-                hintText: "Bloque/Torre",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormContainerWidget(
-                controller: _emailController,
-                hintText: "Email",
-                isPasswordField: false,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormContainerWidget(
-                controller: _passwordController,
-                hintText: "Password",
-                isPasswordField: true,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              GestureDetector(
-                onTap: _createAccount,
-                child: Container(
-                  width: double.infinity,
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: isSigningUp
-                        ? CircularProgressIndicator(
-                            color: Colors.white,
-                          )
-                        : Text(
-                            "Crear",
-                            style: TextStyle(
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Crear Cuenta",
+                  style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                FormContainerWidget(
+                  controller: _nameController,
+                  hintText: "Nombre",
+                  isPasswordField: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                FormContainerWidget(
+                  controller: _lastNameController,
+                  hintText: "Apellido",
+                  isPasswordField: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                FormContainerWidget(
+                  controller: _apartmentController,
+                  hintText: "Apartamento",
+                  isPasswordField: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                FormContainerWidget(
+                  controller: _blockController,
+                  hintText: "Bloque/Torre",
+                  isPasswordField: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                FormContainerWidget(
+                  controller: _emailController,
+                  hintText: "Email",
+                  isPasswordField: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                FormContainerWidget(
+                  controller: _passwordController,
+                  hintText: "Password",
+                  isPasswordField: true,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                GestureDetector(
+                  onTap: _createAccount,
+                  child: Container(
+                    width: double.infinity,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: isSigningUp
+                          ? CircularProgressIndicator(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                            )
+                          : Text(
+                              "Crear",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Ya tienes cuenta?"),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.go('/login');
-                    },
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Ya tienes cuenta?"),
+                    SizedBox(
+                      width: 5,
                     ),
-                  )
-                ],
-              )
-            ],
+                    GestureDetector(
+                      onTap: () {
+                        context.go('/login');
+                      },
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

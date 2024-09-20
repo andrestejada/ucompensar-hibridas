@@ -52,7 +52,6 @@ class AnnouncementView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                // StreamBuilder para cargar los anuncios
                 StreamBuilder<QuerySnapshot>(
                   stream: getAnnouncementsStream(),
                   builder: (context, snapshot) {

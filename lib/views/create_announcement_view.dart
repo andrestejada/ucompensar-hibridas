@@ -17,7 +17,7 @@ class CreateAnnouncementView extends StatefulWidget {
 class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
   bool _isLoading = false;
   FirebaseFirestore db = FirebaseFirestore.instance;
-  FirebaseStorage storage = FirebaseStorage.instance; // Firebase Storage
+  FirebaseStorage storage = FirebaseStorage.instance; 
 
   File? _imageFile;
   final picker = ImagePicker();

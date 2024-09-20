@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // Asegúrate de importar go_router
+import 'package:go_router/go_router.dart';
 import 'package:residents_app/widgets/form_container_widget.dart';
 import 'package:residents_app/widgets/toast.dart';
 
@@ -18,14 +18,13 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passwordController = TextEditingController(text: "Contraseña123");
 
   void signIn() async {
-    // Verificar si los campos están vacíos
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       showToast(message: "Por favor completa todos los campos.");
       return;
     }
 
     setState(() {
-      _isSigning = true; // Mostrar el loader
+      _isSigning = true;
     });
 
     try {
@@ -36,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
       showToast(message: e.message ?? "Error al iniciar sesión.");
     } finally {
       setState(() {
-        _isSigning = false; // Ocultar el loader
+        _isSigning = false; 
       });
     }
   }
