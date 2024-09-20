@@ -3,22 +3,21 @@ import 'package:flutter/material.dart';
 class AnnouncementCard extends StatelessWidget {
   final String title;
   final String description;
-  final String? imageUrl; 
+  final String? imageUrl;
 
   const AnnouncementCard({
     Key? key,
     required this.title,
     required this.description,
-    this.imageUrl, 
+    this.imageUrl,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
-      width: screenWidth, 
+      width: screenWidth,
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Card(
         child: Padding(
@@ -32,7 +31,28 @@ class AnnouncementCard extends StatelessWidget {
                   height: 200, 
                   child: Image.network(
                     imageUrl!,
-                    fit: BoxFit.cover, 
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child; 
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                          value: loadingProgress.expectedTotalBytes != null
+                              ? loadingProgress.cumulativeBytesLoaded /
+                                  (loadingProgress.expectedTotalBytes ?? 1)
+                              : null,
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Center(
+                        child: Text(
+                          'Error al cargar imagen',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      );
+                    },
                   ),
                 ),
               SizedBox(height: 10),
