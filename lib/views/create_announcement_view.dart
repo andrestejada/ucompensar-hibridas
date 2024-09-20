@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart'; // Image Picker
 import 'dart:io';
 import 'package:residents_app/widgets/form_container_widget.dart';
 import 'package:residents_app/widgets/toast.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateAnnouncementView extends StatefulWidget {
   const CreateAnnouncementView({super.key});
@@ -17,7 +18,7 @@ class CreateAnnouncementView extends StatefulWidget {
 class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
   bool _isLoading = false;
   FirebaseFirestore db = FirebaseFirestore.instance;
-  FirebaseStorage storage = FirebaseStorage.instance; 
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   File? _imageFile;
   final picker = ImagePicker();
@@ -37,9 +38,10 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
 
   Future<String?> _uploadImage(File image) async {
     try {
-      final storageRef = storage.ref().child('announcements/${DateTime.now().millisecondsSinceEpoch}.jpg');
+      final storageRef = storage
+          .ref()
+          .child('announcements/${DateTime.now().millisecondsSinceEpoch}.jpg');
       final uploadTask = await storageRef.putFile(image);
-
 
       return await uploadTask.ref.getDownloadURL();
     } catch (e) {
@@ -49,6 +51,10 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
   }
 
   void _createAnnouncement() async {
+    if (_titleController.text.isEmpty || _descriptionController.text.isEmpty) {
+      showToast(message: "todos los campos son obligatorios");
+      return;
+    }
     setState(() {
       _isLoading = true;
     });
@@ -73,7 +79,7 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
       "title": _titleController.text,
       "description": _descriptionController.text,
       "user": userInfo.data(),
-      "imageUrl": imageUrl, 
+      "imageUrl": imageUrl,
     };
 
     await db.collection("announcement").add(usersAnnouncement);
@@ -81,10 +87,11 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
     _titleController.text = "";
     setState(() {
       _isLoading = false;
-      _imageFile = null; 
+      _imageFile = null;
     });
 
     showToast(message: "El anuncio se agregó correctamente");
+    context.go('/announcement');
   }
 
   @override
@@ -120,11 +127,11 @@ class _CreateAnnouncementViewState extends State<CreateAnnouncementView> {
                 ),
                 SizedBox(height: 20),
                 _imageFile != null
-                    ? Image.file(_imageFile!, height: 150) 
+                    ? Image.file(_imageFile!, height: 150)
                     : Container(),
                 SizedBox(height: 20),
                 GestureDetector(
-                  onTap: _pickImage, 
+                  onTap: _pickImage,
                   child: Container(
                     width: double.infinity,
                     height: 45,
