@@ -14,8 +14,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isSigning = false;
-  TextEditingController _emailController = TextEditingController(text: "ejemplo2@correo.com");
-  TextEditingController _passwordController = TextEditingController(text: "Contraseña123");
+  TextEditingController _emailController = TextEditingController(text: "");
+  TextEditingController _passwordController = TextEditingController(text: "");
 
   void signIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
