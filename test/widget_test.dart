@@ -7,24 +7,117 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+import 'package:residents_app/widgets/custom_botton_navigation.dart';
+import 'package:residents_app/widgets/form_container_widget.dart';
 
-import 'package:residents_app/main.dart';
+class _TestScaffold extends StatelessWidget {
+  final String label;
+
+  const _TestScaffold({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Text(label, key: ValueKey<String>('screen-$label')),
+      bottomNavigationBar: const CustomBottomNavigation(),
+    );
+  }
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  testWidgets('FormContainerWidget shows password field with toggle icon', (tester) async {
+    final controller = TextEditingController();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: FormContainerWidget(
+            controller: controller,
+            hintText: 'Password',
+            isPasswordField: true,
+          ),
+        ),
+      ),
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verify password field has visibility toggle icon
+    expect(find.byIcon(Icons.visibility_off), findsOneWidget);
+    expect(find.text('Password'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Tap the toggle icon
+    await tester.tap(find.byIcon(Icons.visibility_off));
+    await tester.pumpAndSettle();
+
+    // Icon should change to visibility (shown state)
+    expect(find.byIcon(Icons.visibility), findsOneWidget);
+  });
+
+  testWidgets('CustomBottomNavigation reflects current route', (tester) async {
+    final router = GoRouter(
+      initialLocation: '/favorites',
+      routes: [
+        GoRoute(
+          path: '/proposals',
+          builder: (context, state) => const _TestScaffold(label: 'Propuestas'),
+        ),
+        GoRoute(
+          path: '/create-proposal',
+          builder: (context, state) => const _TestScaffold(label: 'Crear Propuesta'),
+        ),
+        GoRoute(
+          path: '/favorites',
+          builder: (context, state) => const _TestScaffold(label: 'Favoritos'),
+        ),
+        GoRoute(
+          path: '/announcement',
+          builder: (context, state) => const _TestScaffold(label: 'Anuncios'),
+        ),
+      ],
+    );
+
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+    await tester.pumpAndSettle();
+
+    final navBar = tester.widget<BottomNavigationBar>(find.byType(BottomNavigationBar));
+    expect(navBar.currentIndex, 2);
+  });
+
+  testWidgets('CustomBottomNavigation navigates to tapped item', (tester) async {
+    late final GoRouter router;
+    router = GoRouter(
+      initialLocation: '/proposals',
+      routes: [
+        GoRoute(
+          path: '/proposals',
+          builder: (context, state) => const _TestScaffold(label: 'Propuestas'),
+        ),
+        GoRoute(
+          path: '/create-proposal',
+          builder: (context, state) => const _TestScaffold(label: 'Crear Propuesta'),
+        ),
+        GoRoute(
+          path: '/favorites',
+          builder: (context, state) => const _TestScaffold(label: 'Favoritos'),
+        ),
+        GoRoute(
+          path: '/announcement',
+          builder: (context, state) => const _TestScaffold(label: 'Anuncios'),
+        ),
+      ],
+    );
+
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Anuncios'));
+    await tester.pumpAndSettle();
+
+    // Verify navigation occurred by checking screen content
+    expect(find.byKey(const ValueKey<String>('screen-Anuncios')), findsOneWidget);
   });
 }
